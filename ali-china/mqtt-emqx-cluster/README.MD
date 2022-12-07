@@ -1,4 +1,7 @@
-MQTT WITH LOAD BALANCER,REPLACE THE ACCESSKY AND SECRET KEY THEN CAN WORK
+MQTT with LOAD BALANCER,replace  THE ACCESSKY and  SECRET KEY then can work
+
 terraform init
+
 terraform plan
+
 terraform apply -auto-approve
