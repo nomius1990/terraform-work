@@ -1,3 +1,6 @@
 Website : https://www.emqx.io
-Demo Username : admin
-Demo Password : public
+Username : admin
+Password : public
+
+Official Alicloud Terraform : https://github.com/emqx/terraform-emqx-emqx-alicloud
+Official AWS Terraform : https://github.com/emqx/terraform-emqx-emqx-aws
