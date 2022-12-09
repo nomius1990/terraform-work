@@ -48,6 +48,11 @@ resource "alicloud_instance" "ecs" {
     destination = "/tmp/init.sh"
   }
 
+   provisioner "file" {
+    content     = templatefile("${path.module}/scripts/emqx.service", { local_ip = self.private_ip })
+    destination = "/etc/systemd/system/emqx.service"
+  }
+
   # download emqx
   provisioner "remote-exec" {
     inline = [
@@ -60,6 +65,15 @@ resource "alicloud_instance" "ecs" {
     inline = [
       "chmod +x /tmp/init.sh",
       "/tmp/init.sh",
+    ]
+  }
+  
+  # add auto start service
+   provisioner "remote-exec" {
+    inline = [
+      "chmod 664 /etc/systemd/system/emqx.service",
+      "systemctl daemon-reload",
+      "systemctl enable emqx.service",
     ]
   }
 

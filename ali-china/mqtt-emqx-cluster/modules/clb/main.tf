@@ -16,16 +16,6 @@ resource "alicloud_slb_load_balancer" "clb" {
 resource "alicloud_slb_backend_server" "clb" {
   load_balancer_id = alicloud_slb_load_balancer.clb.id
 
-  #   backend_servers {
-  #     server_id = alicloud_instance.default[0].id
-  #     weight    = 100
-  #   }
-
-  #   backend_servers {
-  #     server_id = alicloud_instance.default[1].id
-  #     weight    = 100
-  #   }
-
   dynamic "backend_servers" {
     for_each = var.instance_ids
 

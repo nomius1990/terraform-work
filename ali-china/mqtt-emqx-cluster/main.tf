@@ -35,6 +35,7 @@ module "mqtt_emqx_cluster" {
   instance_count    = length(module.mqtt_vpc.vswitch_ids)
 }
 
+# #  Load Balancer
 module "mqtt_clb" {
   source              = "./modules/clb"
   name                = var.namespace
@@ -44,4 +45,20 @@ module "mqtt_clb" {
   instance_ids        = module.mqtt_emqx_cluster.instance_ids
   listener_http_ports = var.listener_http_ports
   listener_tcp_ports  = var.listener_tcp_ports
+}
+
+# # create custom image used for auto scaling
+module "mqtt_image" {
+  source      = "./modules/custom_image"
+  instance_id = module.mqtt_emqx_cluster.instance_ids[0]
+}
+
+# # Auto Scaling
+module "mqtt_autoscale" {
+  source            = "./modules/auto_scale"
+  vswitch_ids       = module.mqtt_vpc.vswitch_ids
+  loadbalancer_ids  = [module.mqtt_clb.clb_id]
+  image_id          = module.mqtt_image.custome_image_id
+  instance_type     = var.instance_type
+  security_group_id = module.mqtt_security_group.security_group_id
 }
