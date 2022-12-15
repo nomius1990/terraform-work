@@ -11,9 +11,9 @@ resource "tls_private_key" "key" {
 }
 
 resource "local_sensitive_file" "private_key" {
-  filename          = "${path.module}/tf-emqx-key.pem"
-  content = tls_private_key.key.private_key_pem
-  file_permission   = "0400"
+  filename        = "${path.module}/tf-emqx-key.pem"
+  content         = tls_private_key.key.private_key_pem
+  file_permission = "0400"
 }
 
 resource "alicloud_ecs_key_pair" "key_pair" {
@@ -48,7 +48,7 @@ resource "alicloud_instance" "ecs" {
     destination = "/tmp/init.sh"
   }
 
-   provisioner "file" {
+  provisioner "file" {
     content     = templatefile("${path.module}/scripts/emqx.service", { local_ip = self.private_ip })
     destination = "/etc/systemd/system/emqx.service"
   }
@@ -67,9 +67,9 @@ resource "alicloud_instance" "ecs" {
       "/tmp/init.sh",
     ]
   }
-  
+
   # add auto start service
-   provisioner "remote-exec" {
+  provisioner "remote-exec" {
     inline = [
       "chmod 664 /etc/systemd/system/emqx.service",
       "systemctl daemon-reload",

@@ -121,3 +121,9 @@ variable "listener_http_ports" {
   default     = []
   description = "the http listener ports of clb"
 }
+
+variable "nlb_listener_port" {
+  type        = list(number)
+  description = "network load balancer listen port"
+  default     = []
+}

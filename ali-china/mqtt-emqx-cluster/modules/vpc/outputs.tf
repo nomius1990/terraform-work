@@ -8,3 +8,8 @@ output "vswitch_ids" {
   description = "List of IDs of vswitch"
   value       = alicloud_vswitch.vsw.*.id
 }
+
+output "vswitches" {
+  description = "switches"
+  value       = alicloud_vswitch.vsw
+}
