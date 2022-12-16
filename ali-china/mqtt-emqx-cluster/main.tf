@@ -47,7 +47,7 @@ module "mqtt_emqx_cluster" {
 #   listener_tcp_ports  = var.listener_tcp_ports
 # }
 
-# #  Load Balancer
+# #  NETWORK Load Balancer
 module "mqtt_nlb" {
   source        = "./modules/nlb"
   vpc_id        = module.mqtt_vpc.vpc_id
@@ -56,26 +56,18 @@ module "mqtt_nlb" {
   listener_port = var.nlb_listener_port
 }
 
-module "mqtt_nlb_server_attachment" {
-  count           = length(module.mqtt_emqx_cluster.instance_ids)
-  source          = "./modules/nlb_server_attachment"
-  ports           = var.nlb_listener_port
-  server_group_id = module.mqtt_nlb.server_group_id
-  server_id       = module.mqtt_emqx_cluster.instance_ids[count.index]
-}
-
 # create custom image used for auto scaling
-module "mqtt_image" {
-  source      = "./modules/custom_image"
-  instance_id = module.mqtt_emqx_cluster.instance_ids[0]
-}
+# module "mqtt_image" {
+#   source      = "./modules/custom_image"
+#   instance_id = module.mqtt_emqx_cluster.instance_ids[0]
+# }
 
-# # Auto Scaling
-module "mqtt_autoscale" {
-  source      = "./modules/auto_scale"
-  vswitch_ids = module.mqtt_vpc.vswitch_ids
-  # loadbalancer_ids  = [module.mqtt_clb.clb_id] # ONLY WORK ON CLB
-  image_id          = module.mqtt_image.custome_image_id
-  instance_type     = var.instance_type
-  security_group_id = module.mqtt_security_group.security_group_id
-}
+# # # Auto Scaling
+# module "mqtt_autoscale" {
+#   source      = "./modules/auto_scale"
+#   vswitch_ids = module.mqtt_vpc.vswitch_ids
+#   # loadbalancer_ids  = [module.mqtt_clb.clb_id] # ONLY WORK ON CLB
+#   image_id          = module.mqtt_image.custome_image_id
+#   instance_type     = var.instance_type
+#   security_group_id = module.mqtt_security_group.security_group_id
+# }

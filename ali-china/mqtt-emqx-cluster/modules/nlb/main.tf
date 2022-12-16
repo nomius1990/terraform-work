@@ -1,4 +1,8 @@
 # add nlb
+locals {
+  pro = setproduct(var.instance_ids, var.listener_port)
+}
+
 resource "alicloud_nlb_load_balancer" "default" {
   load_balancer_name = var.name
   load_balancer_type = var.type
@@ -42,4 +46,13 @@ resource "alicloud_nlb_listener" "default" {
   listener_port     = var.listener_port[count.index]
   load_balancer_id  = alicloud_nlb_load_balancer.default.id
   server_group_id   = alicloud_nlb_server_group.default.id
+}
+
+resource "alicloud_nlb_server_group_server_attachment" "default" {
+  count           = length(local.pro)
+  server_type     = "Ecs"
+  server_group_id = alicloud_nlb_server_group.default.id
+  server_id       = local.pro[count.index][0]
+  port            = local.pro[count.index][1]
+  weight          = 100
 }
