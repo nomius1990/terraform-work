@@ -1,0 +1,18 @@
+locals {
+  instance_ids = ["instanceid1", "instanceid2"]
+  ports        = [22, 3306]
+
+  instance_ports = flatten(
+    [
+      for instance_id in instance_ids : [
+        for port in ports : {
+          instance = instance_id
+          port     = port
+        }
+      ]
+    ]
+  )
+}
+
+
+

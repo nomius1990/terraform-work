@@ -7,8 +7,8 @@
     1 Internet Gateway
     1 Route Table
 */
-variable  vpc_cidr {}
-variable  vpc_name {}
+variable "vpc_cidr" {}
+variable "vpc_name" {}
 data "aws_availability_zones" "aws_avazones" {}
 
 # Virtual Private Cloud 
@@ -39,7 +39,7 @@ resource "aws_security_group" "vpc_sgp" {
   vpc_id      = aws_vpc.vpc.id
   description = "website service"
 
-   ingress {
+  ingress {
     description = "Allow Port mqtt"
     from_port   = 18083
     to_port     = 18083
@@ -47,7 +47,7 @@ resource "aws_security_group" "vpc_sgp" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-    ingress {
+  ingress {
     description = "Allow Port mqtt"
     from_port   = 1883
     to_port     = 1883
@@ -79,7 +79,7 @@ resource "aws_security_group" "vpc_sgp" {
     protocol  = "tcp"
   }
   lifecycle {
-    create_before_destroy = true 
+    create_before_destroy = true
   }
 }
 

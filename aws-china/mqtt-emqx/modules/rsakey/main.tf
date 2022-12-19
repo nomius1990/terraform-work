@@ -20,7 +20,7 @@ resource "aws_key_pair" "awspubkey" {
 }
 
 output "public_key_name" {
-    value = aws_key_pair.awspubkey.key_name
+  value = aws_key_pair.awspubkey.key_name
 }
 
 output "private_key_pem" {
