@@ -1,0 +1,2 @@
+variable "pemname" {}
+variable "awskeyname" {}
